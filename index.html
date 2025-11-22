@@ -1,1 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lunar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-p6lHk1h3NfWIPK0WJbZ0pKmsmITBz0OiB0Q3v3wO8J2NyzUvCwK1O08Apg6FqRej06q+2WRvsC+MjuC3XjZFLA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --primary: #9b59b6;
+            --secondary: #8e44ad;
+            --accent: #d19aff;
+            --bg-dark: #0a0a0a;
+            --text-light: #eee;
+            --text-muted: #bbb;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(155, 89, 182, 0.25);
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            cursor: auto;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15,15,15,0.85);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+            nav .logo {
+                font-size: 1.8rem;
+                font-weight: 700;
+                color: var(--accent);
+                letter-spacing: 1px;
+                text-shadow: 0 0 12px var(--accent);
+            }
+
+            nav .menu-links a {
+                margin-left: 2rem;
+                font-weight: 500;
+                color: var(--text-light);
+                text-decoration: none;
+                transition: 0.25s all;
+            }
+
+                nav .menu-links a:hover {
+                    color: var(--accent);
+                    transform: translateY(-2px);
+                    text-shadow: 0 0 8px var(--accent);
+                }
+
+        #nav-line {
+            position: fixed;
+            top: 100%;
+            transform: translateY(-2px);
+            left: 0;
+            height: 2px;
+            background: var(--accent);
+            width: 0%;
+            z-index: 101;
+            transition: width 0.1s;
+        }
+
+        #nav-border {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: rgba(209,154,255,0.2);
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        #cursor {
+            position: fixed;
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 0 1.5rem;
+            gap: 1.5rem;
+            position: relative;
+        }
+
+            .hero h1 {
+                font-size: 4rem;
+                background: linear-gradient(90deg,var(--primary),var(--secondary));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                text-shadow: 0 0 20px var(--accent);
+            }
+
+            .hero p {
+                max-width: 600px;
+                font-size: 1.2rem;
+                color: var(--text-muted);
+            }
+
+        .download-btn {
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 14px;
+            background: linear-gradient(135deg,var(--secondary),var(--primary));
+            color: #fff;
+            text-decoration: none;
+            box-shadow: 0 0 25px rgba(155,89,182,0.6),0 0 25px rgba(209,154,255,0.6);
+            transition: all 0.3s ease;
+        }
+
+            .download-btn:hover {
+                transform: translateY(-5px) scale(1.05);
+                box-shadow: 0 0 50px rgba(155,89,182,0.9),0 0 50px rgba(209,154,255,0.9);
+            }
+
+        section {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease-out;
+            padding: 5rem 1.5rem;
+        }
+
+            section.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--accent);
+            text-align: center;
+            text-shadow: 0 0 12px var(--accent);
+        }
+
+        .features-grid, .dev-grid, .community-grid, .contact-grid {
+            display: grid;
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+        }
+
+        .feature-card, .dev-card, .community-card, .contact-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+        }
+
+            .feature-card:hover, .dev-card:hover, .community-card:hover, .contact-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 0 40px var(--accent);
+                border-color: rgba(209,154,255,0.4);
+            }
+
+            .feature-card h3, .dev-card h3, .community-card h3, .contact-card h3 {
+                color: var(--accent);
+                margin-bottom: 1rem;
+                text-shadow: 0 0 10px var(--accent);
+            }
+
+        .about, .contact {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            gap: 1rem;
+        }
+
+            .about p, .contact p, .contact a {
+                font-size: 1.1rem;
+                color: var(--text-muted);
+                margin: 0.5rem 0;
+                text-decoration: none;
+                transition: color 0.3s, text-shadow 0.3s;
+            }
+
+                .contact a:hover {
+                    color: var(--accent);
+                    text-shadow: 0 0 8px var(--accent);
+                }
+
+        .contact-card i {
+            font-size: 2rem;
+            margin-bottom: 0.8rem;
+            color: var(--accent);
+            transition: transform 0.3s, color 0.3s;
+        }
+
+        .contact-card:hover i {
+            transform: scale(1.2);
+            color: #fff;
+        }
+
+        .dev-card img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+            object-fit: cover;
+            box-shadow: 0 0 20px var(--accent);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+            .dev-card img:hover {
+                transform: scale(1.05);
+                box-shadow: 0 0 30px var(--accent);
+            }
+
+        footer {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            font-size: 0.9rem;
+            color: #888;
+            border-top: 1px solid rgba(155,89,182,0.2);
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="grid-bg"></canvas>
+    <canvas id="particles"></canvas>
+    <div id="cursor"></div>
+    <div id="nav-line"></div>
+    <div id="nav-border"></div>
+
+    <nav>
+        <div class="logo">Lunar Client</div>
+        <div class="menu-links">
+            <a href="#download">Download</a>
+            <a href="#features">Features</a>
+            <a href="#about">About</a>
+            <a href="#developers">Team</a>
+            <a href="#reviews">Reviews</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <section class="hero" id="download">
+        <h1>Lunar Client</h1>
+        <p>Experience Fun Gorilla Tag Modding with Ease using Lunar.</p>
+        <a href="https://discord.gg/PtTNyvxp42" class="download-btn">Download</a>
+    </section>
+
+    <section class="features" id="features">
+        <h2>Features</h2>
+        <div class="features-grid">
+            <div class="feature-card"><h3>Mods</h3><p>Overpowered and Fun Mods for Gorilla Tag.</p></div>
+            <div class="feature-card"><h3>Lightweight</h3><p>Minimal lag, runs smoothly.</p></div>
+            <div class="feature-card"><h3>Undetected</h3><p>Low chance of bans while having fun.</p></div>
+            <div class="feature-card"><h3>Secure</h3><p>100% safe, malware-free downloads.</p></div>
+            <div class="feature-card"><h3>Safety</h3><p>Reliable and safe gameplay experience.</p></div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <h2>About Lunar</h2>
+        <p>Lunar was designed to give you a fun experience in game without worrying about bans. Completely developed by sealgod, this is a solo development.</p>
+    </section>
+
+    <section class="developers" id="developers">
+        <h2>Developers</h2>
+        <div class="dev-grid">
+            <div class="dev-card">
+                <img src="https://cdn.discordapp.com/avatars/1430633373357047997/4607054f8729545f8916a076fd19e11f.png?size=512" alt="sealgod - Developer">
+                <h3>sealgod</h3>
+                <p>@sealgod.dev — Owner of Lunar</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="community" id="reviews">
+        <h2>Reviews</h2>
+        <div class="community-grid">
+            <div class="community-card"><h3></h3><p>There are no current reviews on Lunar.</p></div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <h2>Contact</h2>
+        <div class="contact-grid">
+            <div class="contact-card">
+                <i class="fab fa-youtube"></i>
+                <h3>YouTube</h3>
+                <a href="https://www.youtube.com/@sealgodfr" target="_blank">@sealgodfr</a>
+            </div>
+            <div class="contact-card">
+                <i class="fab fa-discord"></i>
+                <h3>Discord</h3>
+                <a href="https://discord.com/users/1430633373357047997" target="_blank">@sealgod.dev</a>
+            </div>
+            <div class="contact-card">
+                <i class="fab fa-github"></i>
+                <h3>Github</h3>
+                <a href="https://github.com/sealgodreal" target="_blank">@sealgodreal</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 Lunar — @sealgod.dev</p>
+    </footer>
+
+    <script>
+        const cursor = document.getElementById('cursor');
+        let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+        window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+        function updateCursor() { cursor.style.transform = `translate(${mouse.x}px,${mouse.y}px)`; requestAnimationFrame(updateCursor); }
+        updateCursor();
+
+        const gridCanvas = document.getElementById('grid-bg');
+        const gridCtx = gridCanvas.getContext('2d');
+        let gridSize = 80;
+        function resizeGrid() { gridCanvas.width = window.innerWidth; gridCanvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeGrid); resizeGrid();
+
+        function drawGrid() {
+            gridCtx.clearRect(0, 0, gridCanvas.width, gridCanvas.height);
+            gridCtx.strokeStyle = 'rgba(155,89,182,0.2)';
+            gridCtx.lineWidth = 1;
+
+            let scrollOffsetX = -(window.scrollX || 0) * 0.3;
+            let scrollOffsetY = -(window.scrollY || 0) * 0.3;
+
+            for (let x = 0; x < gridCanvas.width + gridSize; x += gridSize) {
+                gridCtx.beginPath();
+                gridCtx.moveTo(x + (scrollOffsetX % gridSize), 0);
+                gridCtx.lineTo(x + (scrollOffsetX % gridSize), gridCanvas.height);
+                gridCtx.stroke();
+            }
+
+            for (let y = 0; y < gridCanvas.height + gridSize; y += gridSize) {
+                gridCtx.beginPath();
+                gridCtx.moveTo(0, y + (scrollOffsetY % gridSize));
+                gridCtx.lineTo(gridCanvas.width, y + (scrollOffsetY % gridSize));
+                gridCtx.stroke();
+            }
+
+            requestAnimationFrame(drawGrid);
+        }
+        drawGrid();
+
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        let particlesArray = [];
+        const numParticles = 80;
+        const maxDistance = 140;
+        function initParticles() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particlesArray = Array.from({ length: numParticles }, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 2 + 1,
+                speedX: (Math.random() - 0.5) * 0.3,
+                speedY: (Math.random() - 0.5) * 0.3
+            }));
+        }
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particlesArray.forEach(p => {
+                let dx = mouse.x - p.x, dy = mouse.y - p.y;
+                let dist = Math.sqrt(dx * dx + dy * dy);
+                ctx.fillStyle = dist < 120 ? '#d19aff' : '#9b59b6';
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+                p.x += p.speedX; p.y += p.speedY;
+                if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+            });
+            for (let i = 0; i < particlesArray.length; i++) {
+                for (let j = i + 1; j < particlesArray.length; j++) {
+                    const dx = particlesArray[i].x - particlesArray[j].x;
+                    const dy = particlesArray[i].y - particlesArray[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < maxDistance) {
+                        ctx.strokeStyle = `rgba(209,154,255,${1 - dist / maxDistance})`;
+                        ctx.lineWidth = 0.8; ctx.beginPath();
+                        ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
+                        ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(drawParticles);
+        }
+        window.addEventListener('resize', initParticles);
+        initParticles();
+        drawParticles();
+
+        const navLine = document.getElementById('nav-line');
+        const navBorder = document.getElementById('nav-border');
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.body.scrollHeight - window.innerHeight;
+            const scrollPercent = Math.min(100, (scrollTop / docHeight) * 100);
+            navLine.style.width = scrollPercent + '%';
+            navBorder.style.opacity = scrollTop > 20 ? 1 : 0;
+        });
+
+        const sections = document.querySelectorAll('section');
+        function revealOnScroll() {
+            const triggerBottom = window.innerHeight * 0.85;
+            sections.forEach(section => {
+                if (section.getBoundingClientRect().top < triggerBottom) section.classList.add('visible');
+            });
+        }
+        window.addEventListener('scroll', revealOnScroll);
+        window.addEventListener('load', revealOnScroll);
+    </script>
+</body>
+</html>
